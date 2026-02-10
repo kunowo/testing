@@ -3,203 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Software Engineer | Luxury Profile</title>
+<title>Luxury Loading</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-    color: #fff;
-    overflow-x: hidden;
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top, #1a1a1a, #0a0a0a 60%);
+    font-family: 'Inter', sans-serif;
+    overflow:hidden;
+    color:#eaeaea;
 }
 
-header {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: radial-gradient(circle at top, rgba(255,215,0,0.15), transparent 70%);
+/* Luxury gold glow background */
+body::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+    animation: pulse 6s infinite ease-in-out;
 }
 
-header h1 {
-    font-size: 4rem;
-    background: linear-gradient(to right, gold, #ffffff);
+@keyframes pulse{
+    0%{ transform: scale(1); opacity:0.6;}
+    50%{ transform: scale(1.2); opacity:0.3;}
+    100%{ transform: scale(1); opacity:0.6;}
+}
+
+.container{
+    text-align:center;
+    padding:50px 70px;
+    border-radius:20px;
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.03);
+    border:1px solid rgba(212,175,55,0.3);
+    box-shadow: 0 0 40px rgba(212,175,55,0.1);
+    position:relative;
+}
+
+h1{
+    font-family: 'Playfair Display', serif;
+    font-size:2rem;
+    letter-spacing:1px;
+    background: linear-gradient(90deg, #d4af37, #f5e6a3, #d4af37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 3px;
+    animation: shimmer 3s infinite linear;
 }
 
-header p {
-    margin-top: 20px;
-    font-size: 1.3rem;
-    color: #ccc;
+@keyframes shimmer{
+    0%{background-position:-200% center;}
+    100%{background-position:200% center;}
 }
 
-.btn {
-    margin-top: 30px;
-    padding: 12px 30px;
-    border: 2px solid gold;
-    color: gold;
-    background: transparent;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-weight: 600;
+.loading-line{
+    width:200px;
+    height:2px;
+    background: rgba(255,255,255,0.1);
+    margin:30px auto 0;
+    position:relative;
+    overflow:hidden;
+    border-radius:5px;
 }
 
-.btn:hover {
-    background: gold;
-    color: black;
-    transform: scale(1.05);
+.loading-line::after{
+    content:"";
+    position:absolute;
+    width:80px;
+    height:100%;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    animation: loading 2s infinite;
 }
 
-section {
-    padding: 100px 10%;
+@keyframes loading{
+    0%{ left:-80px;}
+    100%{ left:200px;}
 }
 
-.section-title {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-    text-align: center;
-    background: linear-gradient(to right, gold, white);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,215,0,0.3);
-    padding: 30px;
-    border-radius: 20px;
-    transition: 0.4s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 30px rgba(255,215,0,0.3);
-}
-
-.card h3 {
-    color: gold;
-    margin-bottom: 15px;
-}
-
-footer {
-    text-align: center;
-    padding: 40px;
-    background: #111;
-    color: #777;
-}
-
-.fade-in {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: 1s ease;
-}
-
-.fade-in.show {
-    opacity: 1;
-    transform: translateY(0);
+.sub{
+    margin-top:20px;
+    font-size:0.9rem;
+    color:rgba(255,255,255,0.6);
+    letter-spacing:2px;
 }
 </style>
 </head>
+
 <body>
 
-<header>
-    <div>
-        <h1>Software Engineer</h1>
-        <p>Membangun Masa Depan Digital Dengan Kode & Inovasi</p>
-        <button class="btn" onclick="scrollToSection()">Explore More</button>
-    </div>
-</header>
-
-<section id="about" class="fade-in">
-    <h2 class="section-title">Tentang Profesi</h2>
-    <p style="text-align:center; max-width:800px; margin:auto; color:#ccc; font-size:1.1rem;">
-        Software Engineer adalah arsitek dunia digital. Mereka merancang, membangun,
-        dan mengoptimalkan sistem perangkat lunak mulai dari aplikasi mobile,
-        website, hingga sistem enterprise berskala global.
-    </p>
-</section>
-
-<section class="fade-in">
-    <h2 class="section-title">Keahlian Utama</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Programming</h3>
-            <p>Menguasai berbagai bahasa seperti Python, JavaScript, C++, Java, dan lainnya.</p>
-        </div>
-        <div class="card">
-            <h3>Problem Solving</h3>
-            <p>Menyelesaikan masalah kompleks dengan logika dan algoritma yang efisien.</p>
-        </div>
-        <div class="card">
-            <h3>System Design</h3>
-            <p>Merancang arsitektur sistem yang scalable dan high-performance.</p>
-        </div>
-        <div class="card">
-            <h3>Team Collaboration</h3>
-            <p>Bekerja dalam tim agile untuk menghasilkan produk berkualitas tinggi.</p>
-        </div>
-    </div>
-</section>
-
-<section class="fade-in">
-    <h2 class="section-title">Karir & Gaji</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Junior Engineer</h3>
-            <p>Memulai karir dengan membangun fondasi teknis yang kuat.</p>
-        </div>
-        <div class="card">
-            <h3>Senior Engineer</h3>
-            <p>Memimpin proyek dan mengelola arsitektur sistem.</p>
-        </div>
-        <div class="card">
-            <h3>Tech Lead / CTO</h3>
-            <p>Mengarahkan strategi teknologi perusahaan secara keseluruhan.</p>
-        </div>
-    </div>
-</section>
-
-<footer>
-    © 2026 Luxury Software Engineer Profile | Designed with Excellence
-</footer>
-
-<script>
-function scrollToSection() {
-    document.getElementById("about").scrollIntoView({behavior: "smooth"});
-}
-
-const faders = document.querySelectorAll('.fade-in');
-
-window.addEventListener('scroll', () => {
-    const triggerBottom = window.innerHeight * 0.85;
-
-    faders.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        if(sectionTop < triggerBottom){
-            section.classList.add('show');
-        }
-    });
-});
-</script>
+<div class="container">
+    <h1>Web anda akan muncul di sini beberapa detik lagi<br>mohon tunggu</h1>
+    <div class="loading-line"></div>
+    <div class="sub">PREPARING YOUR EXPERIENCE</div>
+</div>
 
 </body>
 </html>
