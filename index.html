@@ -1,112 +1,205 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luxury Loading</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+<title>Snake Game Smooth Movement</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: radial-gradient(circle at top, #1a1a1a, #0a0a0a 60%);
-    font-family: 'Inter', sans-serif;
-    overflow:hidden;
-    color:#eaeaea;
-}
-
-/* Luxury gold glow background */
-body::before{
-    content:"";
-    position:absolute;
-    width:600px;
-    height:600px;
-    background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
-    animation: pulse 6s infinite ease-in-out;
-}
-
-@keyframes pulse{
-    0%{ transform: scale(1); opacity:0.6;}
-    50%{ transform: scale(1.2); opacity:0.3;}
-    100%{ transform: scale(1); opacity:0.6;}
-}
-
-.container{
-    text-align:center;
-    padding:50px 70px;
-    border-radius:20px;
-    backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.03);
-    border:1px solid rgba(212,175,55,0.3);
-    box-shadow: 0 0 40px rgba(212,175,55,0.1);
-    position:relative;
-}
-
-h1{
-    font-family: 'Playfair Display', serif;
-    font-size:2rem;
-    letter-spacing:1px;
-    background: linear-gradient(90deg, #d4af37, #f5e6a3, #d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 3s infinite linear;
-}
-
-@keyframes shimmer{
-    0%{background-position:-200% center;}
-    100%{background-position:200% center;}
-}
-
-.loading-line{
-    width:200px;
-    height:2px;
-    background: rgba(255,255,255,0.1);
-    margin:30px auto 0;
-    position:relative;
-    overflow:hidden;
-    border-radius:5px;
-}
-
-.loading-line::after{
-    content:"";
-    position:absolute;
-    width:80px;
-    height:100%;
-    background: linear-gradient(90deg, transparent, #d4af37, transparent);
-    animation: loading 2s infinite;
-}
-
-@keyframes loading{
-    0%{ left:-80px;}
-    100%{ left:200px;}
-}
-
-.sub{
-    margin-top:20px;
-    font-size:0.9rem;
-    color:rgba(255,255,255,0.6);
-    letter-spacing:2px;
-}
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    color: #fff;
+  }
+  canvas {
+    background-color: #222;
+    margin-top: 20px;
+    border-radius: 10px;
+  }
+  .dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-template-rows: repeat(3, 60px);
+    gap: 5px;
+    margin-top: 20px;
+  }
+  .dpad button {
+    background-color: #555;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    transition: background 0.1s;
+  }
+  .dpad button:active {
+    background-color: #999;
+  }
+  .empty { background: transparent; pointer-events: none; }
+  #score {
+    margin-top: 10px;
+    font-size: 20px;
+    color: lime;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Web anda akan muncul di sini beberapa detik lagi<br>mohon tunggu</h1>
-    <div class="loading-line"></div>
-    <div class="sub">PREPARING YOUR EXPERIENCE</div>
+<h1>Snake Game</h1>
+<canvas id="game" width="400" height="400"></canvas>
+<div id="score">Score: 0</div>
+
+<div class="dpad">
+  <div class="empty"></div>
+  <button id="up">↑</button>
+  <div class="empty"></div>
+  <button id="left">←</button>
+  <div class="empty"></div>
+  <button id="right">→</button>
+  <div class="empty"></div>
+  <button id="down">↓</button>
+  <div class="empty"></div>
 </div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const scale = 20;
+const rows = canvas.height / scale;
+const cols = canvas.width / scale;
+
+let snake = [{x: 10, y: 10}];
+let food = generateFood();
+let dx = 0;
+let dy = 0;
+let nextDx = 0;
+let nextDy = 0;
+let gameOver = false;
+let score = 0;
+
+let moveProgress = 0; // 0 to 1, for smooth movement
+let lastTime = 0;
+
+// Generate food at random empty position
+function generateFood() {
+  let x, y;
+  do {
+    x = Math.floor(Math.random() * cols);
+    y = Math.floor(Math.random() * rows);
+  } while (snake.some(seg => seg.x === x && seg.y === y));
+  return {x, y};
+}
+
+// Keyboard controls
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' && dy === 0) { nextDx=0; nextDy=-1; }
+  if (e.key === 'ArrowDown' && dy === 0) { nextDx=0; nextDy=1; }
+  if (e.key === 'ArrowLeft' && dx === 0) { nextDx=-1; nextDy=0; }
+  if (e.key === 'ArrowRight' && dx === 0) { nextDx=1; nextDy=0; }
+});
+
+// D-Pad buttons
+document.getElementById('up').addEventListener('click', () => { if(dy===0){nextDx=0; nextDy=-1;} });
+document.getElementById('down').addEventListener('click', () => { if(dy===0){nextDx=0; nextDy=1;} });
+document.getElementById('left').addEventListener('click', () => { if(dx===0){nextDx=-1; nextDy=0;} });
+document.getElementById('right').addEventListener('click', () => { if(dx===0){nextDx=1; nextDy=0;} });
+
+function drawSegment(x, y) {
+  ctx.fillStyle = 'lime';
+  ctx.beginPath();
+  ctx.moveTo(x + 4, y);
+  ctx.lineTo(x + scale - 4, y);
+  ctx.quadraticCurveTo(x + scale, y, x + scale, y + 4);
+  ctx.lineTo(x + scale, y + scale - 4);
+  ctx.quadraticCurveTo(x + scale, y + scale, x + scale - 4, y + scale);
+  ctx.lineTo(x + 4, y + scale);
+  ctx.quadraticCurveTo(x, y + scale, x, y + scale - 4);
+  ctx.lineTo(x, y + 4);
+  ctx.quadraticCurveTo(x, y, x + 4, y);
+  ctx.fill();
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Draw food as smooth circle
+  ctx.fillStyle = 'red';
+  ctx.beginPath();
+  ctx.arc(food.x*scale + scale/2, food.y*scale + scale/2, scale/2, 0, Math.PI*2);
+  ctx.fill();
+
+  // Draw snake
+  for (let i = 0; i < snake.length; i++) {
+    const seg = snake[i];
+    let px = seg.x*scale;
+    let py = seg.y*scale;
+    if (i===0) {
+      px = seg.x*scale + dx*scale*moveProgress;
+      py = seg.y*scale + dy*scale*moveProgress;
+    }
+    drawSegment(px, py);
+  }
+}
+
+function update() {
+  if (gameOver) return;
+
+  // Start moving if direction chosen
+  if (dx === 0 && dy === 0 && nextDx===0 && nextDy===0) return;
+
+  if (moveProgress >= 1) {
+    moveProgress = 0;
+    dx = nextDx;
+    dy = nextDy;
+    const newHead = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+    // Wall collision
+    if (newHead.x < 0 || newHead.x >= cols || newHead.y < 0 || newHead.y >= rows) {
+      gameOver = true;
+      alert("Game Over! Score: " + score);
+      return;
+    }
+
+    // Self collision
+    if (snake.some(s => s.x === newHead.x && s.y === newHead.y)) {
+      gameOver = true;
+      alert("Game Over! Score: " + score);
+      return;
+    }
+
+    snake.unshift(newHead);
+
+    // Food collision
+    if (newHead.x === food.x && newHead.y === food.y) {
+      score++;
+      document.getElementById('score').textContent = "Score: " + score;
+      food = generateFood();
+    } else {
+      snake.pop();
+    }
+  }
+}
+
+function gameLoop(timestamp) {
+  if (!lastTime) lastTime = timestamp;
+  const delta = (timestamp - lastTime) / 1000; // seconds
+  lastTime = timestamp;
+
+  moveProgress += delta*5; // adjust speed here
+  if (moveProgress > 1) moveProgress = 1;
+
+  update();
+  draw();
+  if (!gameOver) requestAnimationFrame(gameLoop);
+}
+
+draw();
+requestAnimationFrame(gameLoop);
+</script>
 
 </body>
 </html>
