@@ -2,118 +2,202 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Chess vs Bot</title>
-
-<!-- Chessboard UI -->
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
-
+<title>Mini Game Platform</title>
 <style>
-body {
-    background: #1e1e1e;
-    color: white;
-    text-align: center;
-    font-family: Arial;
+body{
+    font-family:Arial;
+    background:#111;
+    color:white;
+    text-align:center;
 }
-
-#board {
-    width: 400px;
-    margin: 20px auto;
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    background:#00bcd4;
+    color:white;
+    cursor:pointer;
 }
-
-select, button {
-    padding: 8px;
-    margin: 10px;
-    font-size: 16px;
+button:hover{background:#0097a7}
+.game{display:none;margin-top:20px}
+canvas{background:black;border:2px solid white}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,100px);
+    gap:5px;
+    justify-content:center;
+}
+.cell{
+    width:100px;
+    height:100px;
+    background:#222;
+    font-size:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
 }
 </style>
 </head>
-
 <body>
 
-<h1>?? Chess vs Bot</h1>
+<h1>?? Mini Game Platform ??</h1>
 
-<label>Difficulty:</label>
-<select id="difficulty">
-    <option value="5">Easy</option>
-    <option value="10">Medium</option>
-    <option value="18">Hard</option>
-</select>
+<button onclick="showGame('guess')">Tebak Angka</button>
+<button onclick="showGame('rps')">Batu Gunting Kertas</button>
+<button onclick="showGame('snake')">Snake</button>
+<button onclick="showGame('ttt')">Tic Tac Toe</button>
+<button onclick="showGame('dodge')">Dodge Blocks</button>
 
-<button onclick="resetGame()">Reset Game</button>
+<!-- 1. Tebak Angka -->
+<div id="guess" class="game">
+<h2>Tebak Angka (1-100)</h2>
+<input id="guessInput" type="number">
+<button onclick="checkGuess()">Tebak</button>
+<p id="guessResult"></p>
+</div>
 
-<div id="board"></div>
+<!-- 2. RPS -->
+<div id="rps" class="game">
+<h2>Batu Gunting Kertas</h2>
+<button onclick="playRPS('batu')">Batu</button>
+<button onclick="playRPS('gunting')">Gunting</button>
+<button onclick="playRPS('kertas')">Kertas</button>
+<p id="rpsResult"></p>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stockfish/stockfish.js"></script>
+<!-- 3. Snake -->
+<div id="snake" class="game">
+<h2>Snake</h2>
+<canvas id="snakeCanvas" width="400" height="400"></canvas>
+</div>
+
+<!-- 4. Tic Tac Toe -->
+<div id="ttt" class="game">
+<h2>Tic Tac Toe</h2>
+<div class="grid" id="board"></div>
+<p id="tttResult"></p>
+</div>
+
+<!-- 5. Dodge -->
+<div id="dodge" class="game">
+<h2>Dodge The Blocks</h2>
+<canvas id="dodgeCanvas" width="400" height="400"></canvas>
+</div>
 
 <script>
-let board = null
-let game = new Chess()
-let engine = STOCKFISH()
-let skillLevel = 5
-
-engine.postMessage("uci")
-engine.postMessage("isready")
-
-document.getElementById("difficulty").addEventListener("change", function() {
-    skillLevel = parseInt(this.value)
-})
-
-function onDragStart(source, piece) {
-    if (game.game_over()) return false
-    if (piece.search(/^b/) !== -1) return false
+function showGame(id){
+    document.querySelectorAll('.game').forEach(g=>g.style.display='none');
+    document.getElementById(id).style.display='block';
 }
 
-function onDrop(source, target) {
-    let move = game.move({
-        from: source,
-        to: target,
-        promotion: 'q'
-    })
-
-    if (move === null) return 'snapback'
-
-    window.setTimeout(makeBotMove, 250)
+/////////////////////
+// 1. Tebak Angka
+let randomNumber=Math.floor(Math.random()*100)+1;
+function checkGuess(){
+    let val=parseInt(document.getElementById("guessInput").value);
+    let result=document.getElementById("guessResult");
+    if(val===randomNumber){result.innerText="Benar!";randomNumber=Math.floor(Math.random()*100)+1;}
+    else if(val<randomNumber){result.innerText="Terlalu kecil";}
+    else{result.innerText="Terlalu besar";}
 }
 
-function makeBotMove() {
-    if (game.game_over()) return
+/////////////////////
+// 2. RPS
+function playRPS(player){
+    let choices=["batu","gunting","kertas"];
+    let comp=choices[Math.floor(Math.random()*3)];
+    let res="";
+    if(player===comp) res="Seri!";
+    else if(
+        (player==="batu"&&comp==="gunting")||
+        (player==="gunting"&&comp==="kertas")||
+        (player==="kertas"&&comp==="batu")
+    ) res="Kamu Menang!";
+    else res="Kamu Kalah!";
+    document.getElementById("rpsResult").innerText="Komputer: "+comp+" | "+res;
+}
 
-    engine.postMessage("position fen " + game.fen())
-    engine.postMessage("setoption name Skill Level value " + skillLevel)
-    engine.postMessage("go depth " + skillLevel)
+/////////////////////
+// 3. Snake
+let canvas=document.getElementById("snakeCanvas");
+let ctx=canvas.getContext("2d");
+let snake=[{x:200,y:200}];
+let dx=20,dy=0;
+let food={x:100,y:100};
 
-    engine.onmessage = function(event) {
-        if (event.data.startsWith("bestmove")) {
-            let bestMove = event.data.split(" ")[1]
-            game.move({
-                from: bestMove.substring(0,2),
-                to: bestMove.substring(2,4),
-                promotion: 'q'
-            })
-            board.position(game.fen())
-        }
+document.addEventListener("keydown",e=>{
+    if(e.key==="ArrowUp"){dx=0;dy=-20;}
+    if(e.key==="ArrowDown"){dx=0;dy=20;}
+    if(e.key==="ArrowLeft"){dx=-20;dy=0;}
+    if(e.key==="ArrowRight"){dx=20;dy=0;}
+});
+
+function drawSnake(){
+    ctx.clearRect(0,0,400,400);
+    snake.unshift({x:snake[0].x+dx,y:snake[0].y+dy});
+    if(snake[0].x===food.x&&snake[0].y===food.y){
+        food.x=Math.floor(Math.random()*20)*20;
+        food.y=Math.floor(Math.random()*20)*20;
+    }else snake.pop();
+
+    ctx.fillStyle="lime";
+    snake.forEach(s=>ctx.fillRect(s.x,s.y,20,20));
+    ctx.fillStyle="red";
+    ctx.fillRect(food.x,food.y,20,20);
+
+    if(snake[0].x<0||snake[0].x>=400||snake[0].y<0||snake[0].y>=400){
+        snake=[{x:200,y:200}];
     }
 }
+setInterval(drawSnake,150);
 
-function onSnapEnd() {
-    board.position(game.fen())
+/////////////////////
+// 4. TicTacToe
+let board=document.getElementById("board");
+let cells=[];
+let current="X";
+for(let i=0;i<9;i++){
+    let div=document.createElement("div");
+    div.classList.add("cell");
+    div.onclick=()=>{
+        if(div.innerText===""){
+            div.innerText=current;
+            current=current==="X"?"O":"X";
+        }
+    };
+    board.appendChild(div);
+    cells.push(div);
 }
 
-function resetGame() {
-    game.reset()
-    board.start()
-}
+/////////////////////
+// 5. Dodge
+let dcanvas=document.getElementById("dodgeCanvas");
+let dctx=dcanvas.getContext("2d");
+let playerX=180;
+let blocks=[];
+document.addEventListener("keydown",e=>{
+    if(e.key==="a")playerX-=20;
+    if(e.key==="d")playerX+=20;
+});
 
-board = Chessboard('board', {
-    draggable: true,
-    position: 'start',
-    onDragStart: onDragStart,
-    onDrop: onDrop,
-    onSnapEnd: onSnapEnd
-})
+function drawDodge(){
+    dctx.clearRect(0,0,400,400);
+    if(Math.random()<0.1) blocks.push({x:Math.random()*380,y:0});
+    blocks.forEach(b=>b.y+=5);
+
+    dctx.fillStyle="cyan";
+    dctx.fillRect(playerX,370,40,20);
+
+    dctx.fillStyle="red";
+    blocks.forEach(b=>{
+        dctx.fillRect(b.x,b.y,20,20);
+        if(b.y>360 && b.x<playerX+40 && b.x+20>playerX){
+            blocks=[];
+        }
+    });
+}
+setInterval(drawDodge,50);
 </script>
 
 </body>
