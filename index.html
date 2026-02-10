@@ -1,205 +1,205 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Mini Game Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Engineer | Luxury Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{
-    font-family:Arial;
-    background:#111;
-    color:white;
-    text-align:center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
-button{
-    padding:10px 20px;
-    margin:5px;
-    border:none;
-    background:#00bcd4;
-    color:white;
-    cursor:pointer;
+
+body {
+    background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+    color: #fff;
+    overflow-x: hidden;
 }
-button:hover{background:#0097a7}
-.game{display:none;margin-top:20px}
-canvas{background:black;border:2px solid white}
-.grid{
-    display:grid;
-    grid-template-columns:repeat(3,100px);
-    gap:5px;
-    justify-content:center;
+
+header {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at top, rgba(255,215,0,0.15), transparent 70%);
 }
-.cell{
-    width:100px;
-    height:100px;
-    background:#222;
-    font-size:40px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
+
+header h1 {
+    font-size: 4rem;
+    background: linear-gradient(to right, gold, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 3px;
+}
+
+header p {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    color: #ccc;
+}
+
+.btn {
+    margin-top: 30px;
+    padding: 12px 30px;
+    border: 2px solid gold;
+    color: gold;
+    background: transparent;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background: gold;
+    color: black;
+    transform: scale(1.05);
+}
+
+section {
+    padding: 100px 10%;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    text-align: center;
+    background: linear-gradient(to right, gold, white);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,215,0,0.3);
+    padding: 30px;
+    border-radius: 20px;
+    transition: 0.4s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(255,215,0,0.3);
+}
+
+.card h3 {
+    color: gold;
+    margin-bottom: 15px;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    background: #111;
+    color: #777;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 1s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 </head>
 <body>
 
-<h1>?? Mini Game Platform ??</h1>
+<header>
+    <div>
+        <h1>Software Engineer</h1>
+        <p>Membangun Masa Depan Digital Dengan Kode & Inovasi</p>
+        <button class="btn" onclick="scrollToSection()">Explore More</button>
+    </div>
+</header>
 
-<button onclick="showGame('guess')">Tebak Angka</button>
-<button onclick="showGame('rps')">Batu Gunting Kertas</button>
-<button onclick="showGame('snake')">Snake</button>
-<button onclick="showGame('ttt')">Tic Tac Toe</button>
-<button onclick="showGame('dodge')">Dodge Blocks</button>
+<section id="about" class="fade-in">
+    <h2 class="section-title">Tentang Profesi</h2>
+    <p style="text-align:center; max-width:800px; margin:auto; color:#ccc; font-size:1.1rem;">
+        Software Engineer adalah arsitek dunia digital. Mereka merancang, membangun,
+        dan mengoptimalkan sistem perangkat lunak mulai dari aplikasi mobile,
+        website, hingga sistem enterprise berskala global.
+    </p>
+</section>
 
-<!-- 1. Tebak Angka -->
-<div id="guess" class="game">
-<h2>Tebak Angka (1-100)</h2>
-<input id="guessInput" type="number">
-<button onclick="checkGuess()">Tebak</button>
-<p id="guessResult"></p>
-</div>
+<section class="fade-in">
+    <h2 class="section-title">Keahlian Utama</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Programming</h3>
+            <p>Menguasai berbagai bahasa seperti Python, JavaScript, C++, Java, dan lainnya.</p>
+        </div>
+        <div class="card">
+            <h3>Problem Solving</h3>
+            <p>Menyelesaikan masalah kompleks dengan logika dan algoritma yang efisien.</p>
+        </div>
+        <div class="card">
+            <h3>System Design</h3>
+            <p>Merancang arsitektur sistem yang scalable dan high-performance.</p>
+        </div>
+        <div class="card">
+            <h3>Team Collaboration</h3>
+            <p>Bekerja dalam tim agile untuk menghasilkan produk berkualitas tinggi.</p>
+        </div>
+    </div>
+</section>
 
-<!-- 2. RPS -->
-<div id="rps" class="game">
-<h2>Batu Gunting Kertas</h2>
-<button onclick="playRPS('batu')">Batu</button>
-<button onclick="playRPS('gunting')">Gunting</button>
-<button onclick="playRPS('kertas')">Kertas</button>
-<p id="rpsResult"></p>
-</div>
+<section class="fade-in">
+    <h2 class="section-title">Karir & Gaji</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Junior Engineer</h3>
+            <p>Memulai karir dengan membangun fondasi teknis yang kuat.</p>
+        </div>
+        <div class="card">
+            <h3>Senior Engineer</h3>
+            <p>Memimpin proyek dan mengelola arsitektur sistem.</p>
+        </div>
+        <div class="card">
+            <h3>Tech Lead / CTO</h3>
+            <p>Mengarahkan strategi teknologi perusahaan secara keseluruhan.</p>
+        </div>
+    </div>
+</section>
 
-<!-- 3. Snake -->
-<div id="snake" class="game">
-<h2>Snake</h2>
-<canvas id="snakeCanvas" width="400" height="400"></canvas>
-</div>
-
-<!-- 4. Tic Tac Toe -->
-<div id="ttt" class="game">
-<h2>Tic Tac Toe</h2>
-<div class="grid" id="board"></div>
-<p id="tttResult"></p>
-</div>
-
-<!-- 5. Dodge -->
-<div id="dodge" class="game">
-<h2>Dodge The Blocks</h2>
-<canvas id="dodgeCanvas" width="400" height="400"></canvas>
-</div>
+<footer>
+    © 2026 Luxury Software Engineer Profile | Designed with Excellence
+</footer>
 
 <script>
-function showGame(id){
-    document.querySelectorAll('.game').forEach(g=>g.style.display='none');
-    document.getElementById(id).style.display='block';
+function scrollToSection() {
+    document.getElementById("about").scrollIntoView({behavior: "smooth"});
 }
 
-/////////////////////
-// 1. Tebak Angka
-let randomNumber=Math.floor(Math.random()*100)+1;
-function checkGuess(){
-    let val=parseInt(document.getElementById("guessInput").value);
-    let result=document.getElementById("guessResult");
-    if(val===randomNumber){result.innerText="Benar!";randomNumber=Math.floor(Math.random()*100)+1;}
-    else if(val<randomNumber){result.innerText="Terlalu kecil";}
-    else{result.innerText="Terlalu besar";}
-}
+const faders = document.querySelectorAll('.fade-in');
 
-/////////////////////
-// 2. RPS
-function playRPS(player){
-    let choices=["batu","gunting","kertas"];
-    let comp=choices[Math.floor(Math.random()*3)];
-    let res="";
-    if(player===comp) res="Seri!";
-    else if(
-        (player==="batu"&&comp==="gunting")||
-        (player==="gunting"&&comp==="kertas")||
-        (player==="kertas"&&comp==="batu")
-    ) res="Kamu Menang!";
-    else res="Kamu Kalah!";
-    document.getElementById("rpsResult").innerText="Komputer: "+comp+" | "+res;
-}
+window.addEventListener('scroll', () => {
+    const triggerBottom = window.innerHeight * 0.85;
 
-/////////////////////
-// 3. Snake
-let canvas=document.getElementById("snakeCanvas");
-let ctx=canvas.getContext("2d");
-let snake=[{x:200,y:200}];
-let dx=20,dy=0;
-let food={x:100,y:100};
-
-document.addEventListener("keydown",e=>{
-    if(e.key==="ArrowUp"){dx=0;dy=-20;}
-    if(e.key==="ArrowDown"){dx=0;dy=20;}
-    if(e.key==="ArrowLeft"){dx=-20;dy=0;}
-    if(e.key==="ArrowRight"){dx=20;dy=0;}
-});
-
-function drawSnake(){
-    ctx.clearRect(0,0,400,400);
-    snake.unshift({x:snake[0].x+dx,y:snake[0].y+dy});
-    if(snake[0].x===food.x&&snake[0].y===food.y){
-        food.x=Math.floor(Math.random()*20)*20;
-        food.y=Math.floor(Math.random()*20)*20;
-    }else snake.pop();
-
-    ctx.fillStyle="lime";
-    snake.forEach(s=>ctx.fillRect(s.x,s.y,20,20));
-    ctx.fillStyle="red";
-    ctx.fillRect(food.x,food.y,20,20);
-
-    if(snake[0].x<0||snake[0].x>=400||snake[0].y<0||snake[0].y>=400){
-        snake=[{x:200,y:200}];
-    }
-}
-setInterval(drawSnake,150);
-
-/////////////////////
-// 4. TicTacToe
-let board=document.getElementById("board");
-let cells=[];
-let current="X";
-for(let i=0;i<9;i++){
-    let div=document.createElement("div");
-    div.classList.add("cell");
-    div.onclick=()=>{
-        if(div.innerText===""){
-            div.innerText=current;
-            current=current==="X"?"O":"X";
-        }
-    };
-    board.appendChild(div);
-    cells.push(div);
-}
-
-/////////////////////
-// 5. Dodge
-let dcanvas=document.getElementById("dodgeCanvas");
-let dctx=dcanvas.getContext("2d");
-let playerX=180;
-let blocks=[];
-document.addEventListener("keydown",e=>{
-    if(e.key==="a")playerX-=20;
-    if(e.key==="d")playerX+=20;
-});
-
-function drawDodge(){
-    dctx.clearRect(0,0,400,400);
-    if(Math.random()<0.1) blocks.push({x:Math.random()*380,y:0});
-    blocks.forEach(b=>b.y+=5);
-
-    dctx.fillStyle="cyan";
-    dctx.fillRect(playerX,370,40,20);
-
-    dctx.fillStyle="red";
-    blocks.forEach(b=>{
-        dctx.fillRect(b.x,b.y,20,20);
-        if(b.y>360 && b.x<playerX+40 && b.x+20>playerX){
-            blocks=[];
+    faders.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        if(sectionTop < triggerBottom){
+            section.classList.add('show');
         }
     });
-}
-setInterval(drawDodge,50);
+});
 </script>
 
 </body>
 </html>
-
