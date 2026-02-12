@@ -1,150 +1,82 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Engineer Portfolio</title>
-  <style>
-    /* Reset dan font */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orang Hebat</title>
 
-    body {
-      background: #0f111a;
-      color: #f0f0f0;
-      line-height: 1.6;
-    }
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #111, #1e1e2f);
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
 
-    header {
-      background: linear-gradient(90deg, #0d6efd, #6610f2);
-      padding: 40px 20px;
-      text-align: center;
-    }
+.container {
+    position: relative;
+    z-index: 2;
+    padding-top: 50px;
+}
 
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
+img {
+    width: 300px;
+    max-width: 80%;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
 
-    header p {
-      font-size: 1.2rem;
-      color: #dcdcdc;
-    }
+h1 {
+    margin-top: 20px;
+    font-size: 28px;
+}
 
-    section {
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
+/* Emoji Style */
+.emoji {
+    position: fixed;
+    top: -50px;
+    font-size: 30px;
+    animation: fall linear forwards;
+}
 
-    h2 {
-      color: #0d6efd;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #6610f2;
-      display: inline-block;
-      padding-bottom: 5px;
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
     }
-
-    .skills, .experience {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .skill, .job {
-      background: #1a1c29;
-      padding: 20px;
-      border-radius: 10px;
-      flex: 1 1 250px;
-      transition: transform 0.3s, background 0.3s;
-    }
-
-    .skill:hover, .job:hover {
-      transform: translateY(-5px);
-      background: #2a2c3f;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      color: #888;
-      margin-top: 50px;
-    }
-
-    a {
-      color: #0d6efd;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-  </style>
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Kunowo YSS</h1>
-    <p>Software Engineer | Mencari Kesempatan Baru di Bidang Teknologi</p>
-  </header>
+<div class="container">
+    <img src="photo.jpg" alt="Photo">
+    <h1>Orang abk / anjing / kontol / memek / gila / ngentot</h1>
+</div>
 
-  <section>
-    <h2>Profil</h2>
-    <p>
-      Saya seorang software engineer berpengalaman dengan kemampuan di front-end, back-end, dan pengembangan aplikasi full-stack.
-      Saya terbiasa bekerja dengan tim agile, selalu belajar teknologi baru, dan senang membangun solusi yang efisien dan scalable.
-    </p>
-  </section>
+<script>
+function createEmoji() {
+    const emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+    emoji.innerText = "🖕🏿";
 
-  <section>
-    <h2>Skills</h2>
-    <div class="skills">
-      <div class="skill"><strong>Bahasa Pemrograman:</strong> JavaScript, Python, Java, C#</div>
-      <div class="skill"><strong>Web:</strong> HTML, CSS, React, Node.js, Flask</div>
-      <div class="skill"><strong>Database:</strong> MySQL, MongoDB, PostgreSQL</div>
-      <div class="skill"><strong>Tools:</strong> Git, Docker, VS Code, Jira</div>
-      <div class="skill"><strong>Cloud & DevOps:</strong> AWS, Firebase, CI/CD</div>
-    </div>
-  </section>
+    emoji.style.left = Math.random() * window.innerWidth + "px";
+    emoji.style.animationDuration = (2 + Math.random() * 3) + "s";
+    emoji.style.fontSize = (20 + Math.random() * 30) + "px";
 
-  <section>
-    <h2>Pengalaman Kerja</h2>
-    <div class="experience">
-      <div class="job">
-        <strong>Software Engineer | PT. Teknologi Canggih</strong>
-        <p>Jan 2022 – Sekarang</p>
-        <ul>
-          <li>Mengembangkan aplikasi web internal menggunakan React dan Node.js</li>
-          <li>Meningkatkan performa aplikasi hingga 40% melalui optimisasi kode</li>
-        </ul>
-      </div>
-      <div class="job">
-        <strong>Junior Developer | Startup XYZ</strong>
-        <p>Jul 2020 – Des 2021</p>
-        <ul>
-          <li>Membantu tim membangun API RESTful dan integrasi database MongoDB</li>
-          <li>Mengimplementasikan unit testing untuk meningkatkan kualitas kode</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    document.body.appendChild(emoji);
 
-  <section>
-    <h2>Kontak</h2>
-    <p>Email: <a href="mailto:kunowo@example.com">kunowo@example.com</a></p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/kunowo-yss" target="_blank">linkedin.com/in/kunowo-yss</a></p>
-    <p>GitHub: <a href="https://github.com/kunowo" target="_blank">github.com/kunowo</a></p>
-  </section>
+    setTimeout(() => {
+        emoji.remove();
+    }, 5000);
+}
 
-  <footer>
-    &copy; 2026 Kunowo YSS | Software Engineer
-  </footer>
+setInterval(createEmoji, 150);
+</script>
 
 </body>
 </html>
